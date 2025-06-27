@@ -62,4 +62,4 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({
   );
 };
 
-export default MessagesPanel;
+export default React.memo(MessagesPanel);

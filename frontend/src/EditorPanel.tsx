@@ -98,4 +98,4 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
   );
 };
 
-export default EditorPanel;
+export default React.memo(EditorPanel);
