@@ -1,5 +1,5 @@
-import React, { createContext, useContext, ReactNode } from "react";
-import { Channel, Message, UserProfile } from "../types";
+import type {Channel, Message, UserProfile} from 'common';
+import React, {createContext, ReactNode, useContext} from 'react';
 
 // Context interfaces
 interface AppContextType {
@@ -32,10 +32,7 @@ interface AppProviderProps {
   value: AppContextType;
 }
 
-export const AppProvider: React.FC<AppProviderProps> = ({
-  children,
-  value,
-}) => {
+export const AppProvider: React.FC<AppProviderProps> = ({children, value}) => {
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
@@ -43,7 +40,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({
 export const useAppContext = (): AppContextType => {
   const context = useContext(AppContext);
   if (context === undefined) {
-    throw new Error("useAppContext must be used within an AppProvider");
+    throw new Error('useAppContext must be used within an AppProvider');
   }
   return context;
 };

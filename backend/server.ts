@@ -1,7 +1,7 @@
-import express, { Request, Response } from "express";
+import { Channel, CreateMessageRequest, Message } from "common";
 import cors from "cors";
+import express, { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { Channel, Message, CreateMessageRequest } from "./types";
 
 const app = express();
 const PORT = process.env.PORT || 3001;

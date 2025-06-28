@@ -1,6 +1,6 @@
-import { useState, useCallback } from "react";
 import axios from "axios";
-import { Channel, Message, UserProfile, MessageFormData } from "../types";
+import type { Channel, Message, MessageFormData, UserProfile } from "common";
+import { useCallback, useState } from "react";
 
 const API_BASE_URL =
   process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3001/api";

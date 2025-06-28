@@ -1,24 +1,35 @@
-import React, { useState, useEffect } from "react";
-import NavigationPanel from "./NavigationPanel";
-import MessagesPanel from "./MessagesPanel";
-import EditorPanel from "./EditorPanel";
-import ProfileView from "./ProfileView";
-import { ErrorBoundary } from "./components/ErrorBoundary";
-import { Channel } from "./types";
-import { useChannels } from "./hooks/useChannels";
-import { useMessages } from "./hooks/useMessages";
-import { useUserProfile } from "./hooks/useUserProfile";
-import { useMessageSubmission } from "./hooks/useMessageSubmission";
-import { formatTimestamp } from "./utils/helpers";
+import type {Channel} from 'common';
+import React, {useEffect, useState} from 'react';
+import EditorPanel from './EditorPanel';
+import MessagesPanel from './MessagesPanel';
+import NavigationPanel from './NavigationPanel';
+import ProfileView from './ProfileView';
+import {ErrorBoundary} from './components/ErrorBoundary';
+import {useChannels} from './hooks/useChannels';
+import {useMessageSubmission} from './hooks/useMessageSubmission';
+import {useMessages} from './hooks/useMessages';
+import {useUserProfile} from './hooks/useUserProfile';
+import {formatTimestamp} from './utils/helpers';
 
 function App(): React.JSX.Element {
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
 
   // Custom hooks for state management
-  const { channels, loading, error: channelsError } = useChannels();
-  const { messages, loadMessages, addMessage, replaceMessage, removeMessage } =
-    useMessages();
-  const { userProfile, showProfileView, saveUserProfile } = useUserProfile();
+  const {channels, loading, error: channelsError} = useChannels();
+  const {
+    messages,
+    loadMessages,
+    addMessage,
+    replaceMessage,
+    removeMessage,
+  } = useMessages();
+  const {
+    userProfile,
+    showProfileView,
+    saveUserProfile,
+    openProfileView,
+    closeProfileView,
+  } = useUserProfile();
 
   // Message submission hook
   const {
@@ -39,7 +50,7 @@ function App(): React.JSX.Element {
   useEffect(() => {
     if (selectedChannel) {
       loadMessages(selectedChannel.id).catch((err) => {
-        console.error("Failed to load messages:", err);
+        console.error('Failed to load messages:', err);
       });
       clearForm(); // Clear input when switching channels
     }
@@ -49,13 +60,28 @@ function App(): React.JSX.Element {
     setSelectedChannel(channel);
   };
 
+  const handleRefresh = (): void => {
+    if (selectedChannel) {
+      loadMessages(selectedChannel.id).catch((err) => {
+        console.error('Failed to refresh messages:', err);
+      });
+    }
+  };
+
   // Combine errors from different sources
   const displayError = channelsError || submissionError;
 
   return (
     <ErrorBoundary>
-      <div className="app">
-        {showProfileView && <ProfileView onSubmit={saveUserProfile} />}
+      <div className='app'>
+        {showProfileView && (
+          <ProfileView
+            isVisible={showProfileView}
+            onSubmit={saveUserProfile}
+            existingProfile={userProfile}
+            onClose={closeProfileView}
+          />
+        )}
 
         {/* Navigation Panel */}
         <NavigationPanel
@@ -63,23 +89,33 @@ function App(): React.JSX.Element {
           selectedChannel={selectedChannel}
           loading={loading}
           handleChannelSelect={handleChannelSelect}
+          onProfileClick={openProfileView}
         />
 
         {/* Main Content Area */}
-        <div className="main-content">
+        <div className='main-content'>
           {/* Messages Panel */}
           <MessagesPanel
             selectedChannel={selectedChannel}
             messages={messages}
             formatTimestamp={formatTimestamp}
+            handleRefresh={handleRefresh}
           />
 
           {/* Editor Panel - only show when channel is selected */}
           {selectedChannel && (
             <EditorPanel
               selectedChannel={selectedChannel}
-              error={displayError}
+              onMessageSent={() => {
+                // Refresh messages after sending
+                handleRefresh();
+              }}
               formData={formData}
+              onFormDataChange={(data: import('common').MessageFormData) => {
+                // Handle form data changes if needed
+                console.log('Form data changed:', data);
+              }}
+              error={displayError}
               handleInputChange={handleInputChange}
               handleSubmit={handleSubmit}
             />

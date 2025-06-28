@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { UserProfile } from "../types";
 import { useLocalStorage } from "./useStorage";
 
@@ -29,10 +29,20 @@ export const useUserProfile = () => {
     setShowProfileView(true);
   };
 
+  const openProfileView = (): void => {
+    setShowProfileView(true);
+  };
+
+  const closeProfileView = (): void => {
+    setShowProfileView(false);
+  };
+
   return {
     userProfile,
     showProfileView,
     saveUserProfile,
     clearUserProfile,
+    openProfileView,
+    closeProfileView,
   };
 };

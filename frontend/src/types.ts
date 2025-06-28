@@ -1,62 +1,42 @@
-// Channel interface
-export interface Channel {
-  id: string;
-  name: string;
-  description: string;
-}
+// Import types for local use in interface definitions
+import type { Channel, Message, MessageFormData, UserProfile } from 'common';
 
-// Message interface
-export interface Message {
-  id: string;
-  author: string;
-  content: string;
-  timestamp: string;
-  channelId: string;
-}
+// Re-export shared types from common package for use throughout the frontend
+export type {
+  ApiError, ApiResponse, Channel, CreateMessageRequest, Message, MessageFormData, UserProfile, UserProfileFormData
+} from 'common';
 
-// User profile interface
-export interface UserProfile {
-  name: string;
-  description: string;
-  role: string;
-  hobbies: string;
-  profilePicture: string | null;
-}
+// Frontend-specific component prop interfaces
 
-// Form data interface for message creation
-export interface MessageFormData {
-  content: string;
-}
-
-// API response types
-export interface ApiResponse<T> {
-  data: T;
-  success: boolean;
-  error?: string;
-}
-
-// Component prop types
+// Component prop types (frontend-specific)
 export interface NavigationPanelProps {
   channels: Channel[];
   selectedChannel: Channel | null;
   loading: boolean;
   handleChannelSelect: (channel: Channel) => void;
+  onProfileClick: () => void;
 }
 
 export interface MessagesPanelProps {
   selectedChannel: Channel | null;
   messages: Record<string, Message[]>;
   formatTimestamp: (timestamp: string) => string;
+  handleRefresh: () => void;
 }
 
 export interface EditorPanelProps {
   selectedChannel: Channel | null;
-  error: string;
+  onMessageSent: () => void;
   formData: MessageFormData;
+  onFormDataChange: (data: MessageFormData) => void;
+  error?: string;
   handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
 export interface ProfileViewProps {
+  isVisible: boolean;
   onSubmit: (profileData: UserProfile) => void;
+  existingProfile?: UserProfile | null;
+  onClose: () => void;
 }

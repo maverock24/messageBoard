@@ -1,0 +1,31 @@
+{
+  "name": "message-board-workspace",
+  "version": "1.0.0",
+  "description": "Message Board Full Stack Application",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend", 
+    "common",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build:common && npm run build:backend && npm run build:frontend",
+    "build:common": "npm run build --workspace=common",
+    "build:backend": "npm run build --workspace=message-board-backend",
+    "build:frontend": "npm run build --workspace=message-board-frontend",
+    "dev": "npm run build:common && concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=message-board-backend",
+    "dev:frontend": "npm run start --workspace=message-board-frontend",
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "clean": "npm run clean --workspaces --if-present",
+    "install:all": "npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0"
+  }
+}

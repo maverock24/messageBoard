@@ -1,10 +1,5 @@
-/**
- * Formats a timestamp string into a localized date/time string
- */
-export const formatTimestamp = (timestamp: string): string => {
-  const date = new Date(timestamp);
-  return date.toLocaleString();
-};
+// Re-export utilities from common package
+export { formatTimestamp, generateId, sanitizeInput, validateChannelName, validateMessageContent } from 'common';
 
 /**
  * Validates if a string is not empty or just whitespace

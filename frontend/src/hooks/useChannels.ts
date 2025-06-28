@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { Channel } from "../types";
+import type { Channel } from "common";
+import { useEffect, useState } from "react";
 
 const API_BASE_URL =
   process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3001/api";
