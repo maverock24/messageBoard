@@ -78,6 +78,11 @@ npm run dev:frontend      # Start frontend (http://localhost:3000)
 # Linting
 npm run lint              # Lint all workspaces
 npm run lint:fix          # Auto-fix linting issues
+
+# Testing
+npm test                  # Run all tests
+npm run test:common       # Run common package tests only
+npm run test:coverage     # Run tests with coverage report
 ```
 
 ## Development
@@ -145,6 +150,28 @@ common/src/
 - **Backend**: Node.js environment with TypeScript support
 - **Frontend**: React environment with TypeScript support
 - **Shared**: Common linting rules across workspaces
+
+### Testing
+
+The project includes comprehensive unit tests for shared utilities:
+
+- **Jest**: Test framework with TypeScript support
+- **Coverage reporting**: HTML and text coverage reports
+- **29 test cases** covering all utility functions:
+  - `formatTimestamp()` - 8 test cases including edge cases
+  - `validateMessageContent()` - 5 test cases for content validation
+  - `validateChannelName()` - 5 test cases for channel name validation  
+  - `sanitizeInput()` - 5 test cases for input sanitization
+  - `generateId()` - 6 test cases for ID generation
+
+**Test Commands**:
+```bash
+npm test                  # Run all tests
+npm run test:common       # Run common package tests only
+npm run test:coverage     # Run tests with coverage report
+```
+
+**Coverage**: 100% function and branch coverage for all utility functions
 
 ### API Endpoints
 
