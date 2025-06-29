@@ -14,8 +14,9 @@ A modern, full-stack channel-based message board application built with React + 
 - 💾 **Local storage** - User profiles persist across sessions with robust error handling
 - 🎯 **TypeScript support** - Full type safety across frontend and backend
 - ⚡ **React best practices** - Custom hooks, memoization, error boundaries
-- 🚨 **Error handling** - Graceful error recovery with user-friendly messages
+- 🚨 **Comprehensive error handling** - Graceful error recovery with user-friendly messages across all components
 - 🔄 **Optimistic updates** - Instant UI feedback for better user experience
+- 🧪 **Robust testing** - Comprehensive test coverage for both utilities and UI components
 
 ## Architecture
 
@@ -138,6 +139,15 @@ common/src/
 - `useCallback` for function memoization
 - Optimistic updates for better UX
 - Error boundaries for graceful error handling
+- Proper useEffect dependency management to prevent unnecessary re-renders
+
+**Error Handling**:
+
+- Comprehensive error states in all custom hooks
+- User-friendly error messages displayed in UI components
+- Error recovery mechanisms (retry functionality)
+- Proper error prop propagation through component hierarchy
+- Race condition prevention in async operations
 
 **TypeScript Integration**:
 
@@ -153,7 +163,9 @@ common/src/
 
 ### Testing
 
-The project includes comprehensive unit tests for shared utilities:
+The project includes comprehensive testing for both shared utilities and frontend components:
+
+#### Backend/Common Tests
 
 - **Jest**: Test framework with TypeScript support
 - **Coverage reporting**: HTML and text coverage reports
@@ -164,14 +176,65 @@ The project includes comprehensive unit tests for shared utilities:
   - `sanitizeInput()` - 5 test cases for input sanitization
   - `generateId()` - 6 test cases for ID generation
 
+**Coverage**: 100% function and branch coverage for all utility functions
+
+#### Frontend Tests
+
+- **React Testing Library**: Component testing with DOM queries
+- **Jest**: Test framework with mocking capabilities
+- **Comprehensive UI testing**: Tests for all major user interactions and error states
+- **Error handling coverage**: Tests for network failures, validation errors, and edge cases
+- **Environment mocking**: localStorage, scrollIntoView, and other browser APIs properly mocked
+
+**Frontend test coverage includes**:
+
+- User profile creation and persistence
+- Channel selection and navigation
+- Message submission and validation
+- Error state display and recovery
+- Loading states and optimistic updates
+- Keyboard shortcuts and accessibility
+
+**Test reliability improvements**:
+
+- Proper async/await handling for all asynchronous operations
+- Consistent error message testing using actual UI text
+- Mocked browser APIs to prevent test environment issues
+- Race condition fixes for reliable error state testing
+
 **Test Commands**:
+
 ```bash
 npm test                  # Run all tests
 npm run test:common       # Run common package tests only
 npm run test:coverage     # Run tests with coverage report
+npm run test:frontend     # Run frontend tests only
 ```
 
-**Coverage**: 100% function and branch coverage for all utility functions
+### Error Handling Patterns
+
+The application implements comprehensive error handling across all layers:
+
+**Frontend Error Handling**:
+
+- **Component-level**: All major components (`NavigationPanel`, `MessagesPanel`, `EditorPanel`) accept and display error props
+- **Hook-level**: Custom hooks (`useChannels`, `useMessages`, `useMessageSubmission`) manage error states
+- **User-friendly messages**: Technical errors are translated to user-friendly messages
+- **Error recovery**: Users can retry failed operations without page refresh
+
+**Error State Management**:
+
+- Loading states prevent multiple concurrent requests
+- Error states are properly cleared when operations succeed
+- Optimistic updates are rolled back on failure
+- Form validation provides immediate feedback
+
+**Testing Error Scenarios**:
+
+- Network failures are simulated and tested
+- Invalid input validation is thoroughly tested
+- Error message display is verified in UI tests
+- Error recovery mechanisms are tested
 
 ### API Endpoints
 
@@ -213,8 +276,16 @@ cd frontend && npm run build
 ## Contributing
 
 1. **Shared types**: Add to `common/src/types.ts`
-2. **Shared utilities**: Add to `common/src/utils.ts`
-3. **Frontend components**: Follow existing patterns with custom hooks
+2. **Shared utilities**: Add to `common/src/utils.ts` with corresponding tests
+3. **Frontend components**: Follow existing patterns with custom hooks and proper error handling
 4. **Backend routes**: Add to `backend/server.ts`
+5. **Testing**: Write tests for new functionality, ensure error states are covered
 
-All code should pass ESLint and TypeScript compilation before committing.
+**Development Guidelines**:
+
+- All code should pass ESLint and TypeScript compilation before committing
+- New components should include error prop handling and display
+- Custom hooks should implement proper error states and loading indicators
+- Tests should cover both happy path and error scenarios
+- Use React Testing Library best practices for UI testing
+- Mock browser APIs appropriately in test environment

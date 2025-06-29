@@ -6,6 +6,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({
   channels,
   selectedChannel,
   loading,
+  error,
   handleChannelSelect,
   onProfileClick,
 }) => {
@@ -17,6 +18,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = ({
       </div>
 
       <div className='channels-list'>
+        {error && <div className='error'>{error}</div>}
         {loading ? (
           <LoadingSpinner size='small' message='Loading channels...' />
         ) : (

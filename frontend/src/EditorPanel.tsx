@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { EditorPanelProps } from "./types";
+import React, {useEffect, useRef} from 'react';
+import {EditorPanelProps} from './types';
 
 const EditorPanel: React.FC<EditorPanelProps> = ({
   selectedChannel,
@@ -18,7 +18,7 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
   }, [selectedChannel]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       if (e.altKey) {
         // Alt+Enter: Add new line - manually insert newline
         e.preventDefault();
@@ -29,12 +29,12 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
 
         // Create new value with newline inserted at cursor position
         const newValue =
-          value.substring(0, start) + "\n" + value.substring(end);
+          value.substring(0, start) + '\n' + value.substring(end);
 
         // Create synthetic event for handleInputChange
         const syntheticEvent = {
           target: {
-            name: "content",
+            name: 'content',
             value: newValue,
           },
         } as React.ChangeEvent<HTMLTextAreaElement>;
@@ -61,22 +61,22 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
   };
 
   return (
-    <div className="editor-panel">
-      <div className="editor-header">
+    <div className='editor-panel'>
+      <div className='editor-header'>
         <h3>New Message</h3>
-        <span className="keyboard-hint">
+        <span className='keyboard-hint'>
           Press Enter to send • Alt+Enter for new line
         </span>
       </div>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className='error'>{error}</div>}
 
-      <form className="editor-form" onSubmit={handleSubmit}>
-        <div className="form-group">
+      <form className='editor-form' onSubmit={handleSubmit}>
+        <div className='form-group'>
           <textarea
             ref={textareaRef}
-            id="content"
-            name="content"
+            id='content'
+            name='content'
             value={formData.content}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
@@ -87,8 +87,8 @@ const EditorPanel: React.FC<EditorPanelProps> = ({
         </div>
 
         <button
-          type="submit"
-          className="submit-button"
+          type='submit'
+          className='submit-button'
           disabled={!formData.content.trim()}
         >
           Send Message

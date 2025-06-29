@@ -13,6 +13,7 @@ import {formatTimestamp} from './utils/helpers';
 
 function App(): React.JSX.Element {
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
+  const [messagesError, setMessagesError] = useState<string>('');
 
   // Custom hooks for state management
   const {channels, loading, error: channelsError} = useChannels();
@@ -49,12 +50,17 @@ function App(): React.JSX.Element {
   // Load messages when channel is selected
   useEffect(() => {
     if (selectedChannel) {
+      setMessagesError(''); // Clear previous errors
       loadMessages(selectedChannel.id).catch((err) => {
         console.error('Failed to load messages:', err);
+        setMessagesError(
+          err.message || 'Failed to load messages. Please try again.'
+        );
       });
       clearForm(); // Clear input when switching channels
     }
-  }, [selectedChannel, loadMessages, clearForm]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedChannel]);
 
   const handleChannelSelect = (channel: Channel): void => {
     setSelectedChannel(channel);
@@ -68,8 +74,7 @@ function App(): React.JSX.Element {
     }
   };
 
-  // Combine errors from different sources
-  const displayError = channelsError || submissionError;
+  // Combine errors from different sources is no longer needed - each component shows its own errors
 
   return (
     <ErrorBoundary>
@@ -88,6 +93,7 @@ function App(): React.JSX.Element {
           channels={channels}
           selectedChannel={selectedChannel}
           loading={loading}
+          error={channelsError}
           handleChannelSelect={handleChannelSelect}
           onProfileClick={openProfileView}
         />
@@ -100,6 +106,7 @@ function App(): React.JSX.Element {
             messages={messages}
             formatTimestamp={formatTimestamp}
             handleRefresh={handleRefresh}
+            error={messagesError}
           />
 
           {/* Editor Panel - only show when channel is selected */}
@@ -115,7 +122,7 @@ function App(): React.JSX.Element {
                 // Handle form data changes if needed
                 console.log('Form data changed:', data);
               }}
-              error={displayError}
+              error={submissionError}
               handleInputChange={handleInputChange}
               handleSubmit={handleSubmit}
             />

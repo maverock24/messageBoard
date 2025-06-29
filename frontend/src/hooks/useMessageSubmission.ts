@@ -25,7 +25,7 @@ export const useMessageSubmission = ({
   removeMessage,
 }: UseMessageSubmissionProps) => {
   const [formData, setFormData] = useState<MessageFormData>({ content: "" });
-  const [error, setError] = useState<string>("");
+  const [error, setErrorState] = useState<string>("");
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
@@ -38,10 +38,14 @@ export const useMessageSubmission = ({
     []
   );
 
+  const setError = useCallback((message: string): void => {
+    setErrorState(message);
+  }, []);
+
   const clearForm = useCallback((): void => {
     setFormData({ content: "" });
     setError("");
-  }, []);
+  }, [setError]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
@@ -107,6 +111,7 @@ export const useMessageSubmission = ({
       replaceMessage,
       removeMessage,
       clearForm,
+      setError,
     ]
   );
 

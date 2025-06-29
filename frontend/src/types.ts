@@ -13,6 +13,7 @@ export interface NavigationPanelProps {
   channels: Channel[];
   selectedChannel: Channel | null;
   loading: boolean;
+  error?: string;
   handleChannelSelect: (channel: Channel) => void;
   onProfileClick: () => void;
 }
@@ -22,6 +23,7 @@ export interface MessagesPanelProps {
   messages: Record<string, Message[]>;
   formatTimestamp: (timestamp: string) => string;
   handleRefresh: () => void;
+  error?: string;
 }
 
 export interface EditorPanelProps {

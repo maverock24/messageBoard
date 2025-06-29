@@ -46,6 +46,11 @@
     ]
   },
   "proxy": "http://localhost:3001",
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(axios)/)"
+    ]
+  },
   "devDependencies": {
     "@types/node": "^18.19.0",
     "@types/react": "^18.2.0",

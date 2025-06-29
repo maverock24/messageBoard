@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
-import { MessagesPanelProps } from "./types";
+import React, {useEffect, useRef} from 'react';
+import {MessagesPanelProps} from './types';
 
 const MessagesPanel: React.FC<MessagesPanelProps> = ({
   selectedChannel,
   messages,
   formatTimestamp,
+  error,
 }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentMessages = selectedChannel
@@ -19,33 +20,34 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({
   // Auto-scroll to bottom when messages change or channel changes
   useEffect(() => {
     if (messagesEndRef.current && selectedChannel) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({behavior: 'smooth'});
     }
   }, [sortedMessages, selectedChannel]);
 
   return (
-    <div className="messages-panel">
+    <div className='messages-panel'>
       {selectedChannel ? (
         <>
-          <div className="messages-header">
+          <div className='messages-header'>
             <h2>#{selectedChannel.name}</h2>
           </div>
 
-          <div className="messages-list">
+          <div className='messages-list'>
+            {error && <div className='error'>{error}</div>}
             {sortedMessages.length === 0 ? (
-              <div className="no-messages">
+              <div className='no-messages'>
                 No messages yet. Be the first to post in this channel!
               </div>
             ) : (
               sortedMessages.map((message) => (
-                <div key={message.id} className="message-card">
-                  <div className="message-header">
-                    <span className="message-author">{message.author}</span>
-                    <span className="message-timestamp">
+                <div key={message.id} className='message-card'>
+                  <div className='message-header'>
+                    <span className='message-author'>{message.author}</span>
+                    <span className='message-timestamp'>
                       {formatTimestamp(message.timestamp)}
                     </span>
                   </div>
-                  <div className="message-content">{message.content}</div>
+                  <div className='message-content'>{message.content}</div>
                 </div>
               ))
             )}
@@ -54,7 +56,7 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({
           </div>
         </>
       ) : (
-        <div className="no-channel-selected">
+        <div className='no-channel-selected'>
           👈 Select a channel from the sidebar to view messages
         </div>
       )}
